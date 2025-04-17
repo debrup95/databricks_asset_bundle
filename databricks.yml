@@ -1,0 +1,29 @@
+# This is a Databricks asset bundle definition for demo_project.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: demo_project
+  uuid: 847ce806-46ab-4865-ae9a-67605c9394af
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-3220305541446391.11.azuredatabricks.net
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-3220305541446391.11.azuredatabricks.net
+      # We explicitly deploy to /Workspace/Users/debrup.kar@outlook.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/debrup.kar@outlook.com/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: debrup.kar@outlook.com
+        level: CAN_MANAGE
